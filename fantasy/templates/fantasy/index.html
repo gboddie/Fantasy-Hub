@@ -1,0 +1,73 @@
+{% extends 'fantasy/base.html' %}
+{% block main%}
+<div class="main-header">
+  <div class="row">
+    <div class="col-sm-2">Contest</div>
+    <div class="col-sm-2">Level</div>
+    <div class="col-sm-2">Prizes</div>
+    <div class="col-sm-2">Entries</div>
+    <div class="col-sm-2"></div>
+  </div>
+</div>
+<div class="main-body">
+</div>
+{% endblock %}
+{% block files%}
+{% load static %}
+<script src="{% static 'fantasy/app.js' %}"></script>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+daily_page =
+`{% for league in leagues %}
+  {% if league.league_type.contest == 'Daily' %}
+    <div class="row">
+    <div class="col-sm-2">{{ league.league_type.contest }}</div>
+    <div class="col-sm-2">${{ league.league_type.level }}</div>
+    <div class="col-sm-2">$ {{ league.league_type.prize }}</div>
+    <div id="{{ league.id }}" class="col-sm-2">{{ league.filled }}</div>
+    <button class="bg-primary" data-leagueid="{{ league.id }}" data-contest="{{ league.league_type.contest }}" data-level="{{ league.league_type.level }}" type="button">Enter</button>
+    </div>
+  {% endif %}
+{% endfor %}`;
+
+redraft_page =
+`{% for league in leagues %}
+  {% if league.league_type.contest == 'Redraft' %}
+    <div class="row">
+    <div class="col-sm-2">{{ league.league_type.contest }}</div>
+    <div class="col-sm-2">${{ league.league_type.level }}</div>
+    <div class="col-sm-2">$ {{ league.league_type.prize }}</div>
+    <div id="{{ league.id }}" class="col-sm-2">{{ league.filled }}/{{ league.league_type.total_teams}}</div>
+    <button class="bg-primary" data-leagueid="{{ league.id }}" data-contest="{{ league.league_type.contest }}" data-level="{{ league.league_type.level }}" type="button">Enter</button>
+    </div>
+  {% endif %}
+{% endfor %}`;
+
+dynasty_page =
+`{% for league in leagues %}
+  {% if league.league_type.contest == 'Dynasty' %}
+    <div class="row">
+    <div class="col-sm-2">{{ league.league_type.contest }}</div>
+    <div class="col-sm-2">${{ league.league_type.level }}</div>
+    <div class="col-sm-2">$ {{ league.league_type.prize }}</div>
+    <div id="{{ league.id }}" class="col-sm-2">{{ league.filled }}/{{ league.league_type.total_teams}}</div>
+    <button class="bg-primary" data-leagueid="{{ league.id }}" data-contest="{{ league.league_type.contest }}" data-level="{{ league.league_type.level }}" type="button">Enter</button>
+    </div>
+  {% endif %}
+{% endfor %}`;
+
+bb_page =
+`{% for league in leagues %}
+  {% if league.league_type.contest == 'Best Ball' %}
+    <div class="row">
+    <div class="col-sm-2">{{ league.league_type.contest }}</div>
+    <div class="col-sm-2">${{ league.league_type.level }}</div>
+    <div class="col-sm-2">$ {{ league.league_type.prize }}</div>
+    <div id="{{ league.id }}" class="col-sm-2">{{ league.filled }}/{{ league.league_type.total_teams}}</div>
+    <button class="bg-primary" data-leagueid="{{ league.id }}" data-contest="{{ league.league_type.contest }}" data-level="{{ league.league_type.level }}" type="button">Enter</button>
+    </div>
+  {% endif %}
+{% endfor %}`;
+</script>
+{% endblock %}

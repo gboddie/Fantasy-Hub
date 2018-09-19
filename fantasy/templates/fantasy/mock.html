@@ -1,0 +1,98 @@
+{% extends 'fantasy/base2.html' %}
+{% block main%}
+<div class="main-header">
+  <div class="row">
+    <div class="col-sm-5">League Type</div>
+    <div class="col-sm-2">Scoring</div>
+    <div class="col-sm-5">Draft Position</div>
+  </div>
+</div>
+<form class="" action="{% url 'draft'  %}" method="post">
+  {% csrf_token %}
+  <div class="main-body">
+    <input type="hidden" name="draft" value="Mock">
+    <div class="row">
+      <div class="col-sm-5">
+        <input type="radio" value="Redraft" name="group1" checked="checked">
+        <label for="Redraft">Redraft</label>
+      </div>
+      <div class="col-sm-2">
+        <input type="radio" value="Standard" name="group2">
+        <label for="Standard">Standard</label>
+      </div>
+      <div class="col-sm-5">
+        <input type="radio" value="1" name="group3" checked="checked">
+        <label for="1" class="radio_margin_right">1</label>
+        <input type="radio" value="7" name="group3">
+        <label for="7">7</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <input type="radio" value="Dynasty" name="group1">
+        <label for="Dynasty">Dynasty</label>
+      </div>
+      <div class="col-sm-2 radio_align_PPR">
+        <input type="radio" value="PPR" name="group2" checked="checked">
+        <label for="PPR">PPR</label>
+      </div>
+      <div class="col-sm-5">
+        <input type="radio" value="2" name="group3">
+        <label for="2" class="radio_margin_right">2</label>
+        <input type="radio" value="8" name="group3">
+        <label for="8">8</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-5">
+        <input type="radio" value="Best_Ball" name="group1">
+        <label for="Best_Ball">Best Ball</label>
+      </div>
+      <div class="col-sm-2">
+        <input type="radio" value="Half-PPR" name="group2">
+        <label for="Half-PPR">Half-PPR</label>
+      </div>
+      <div class="col-sm-5">
+        <input type="radio" value="3" name="group3">
+        <label for="3" class="radio_margin_right">3</label>
+        <input type="radio" value="9" name="group3">
+        <label for="9">9</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7"></div>
+      <div class="col-sm-5">
+        <input type="radio" value="4" name="group3">
+        <label for="4" class="radio_margin_right">4</label>
+        <input type="radio" value="10" name="group3">
+        <label for="10" class="radio_margin_right2">10</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7"></div>
+      <div class="col-sm-5">
+        <input type="radio" value="5" name="group3">
+        <label for="5" class="radio_margin_right">5</label>
+        <input type="radio" value="11" name="group3">
+        <label for="11" class="radio_margin_right3">11</label>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7"></div>
+      <div class="col-sm-5">
+        <input type="radio" value="6" name="group3">
+        <label for="6" class="radio_margin_right">6</label>
+        <input type="radio" value="12" name="group3">
+        <label for="12" class="radio_margin_right2">12</label>
+      </div>
+    </div>
+    <div class="row" value="row-margin">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-4">
+        <button class="bg-primary block" type="submit" name="button">Start</button>
+      </div>
+      <div class="col-sm-3"></div>
+    </div>
+  </div>
+</form>
+{% endblock %}

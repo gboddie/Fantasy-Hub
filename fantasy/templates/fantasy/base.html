@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+  <link rel="stylesheet" href="{% static 'fantasy/style.css' %}">
+</head>
+<body class="container-fluid">
+  <div class="header">
+    <div class="title-top">
+      <h1 class="logo">Fantasy Hub</h1>
+      <div class="username">
+        <div class="row">
+          <div class="col-9">
+            <ul>
+              {% if user.is_authenticated %}
+              <li id="user" data-id={{ user.id }}>{{ user.username }}</li>
+              <li><a href="{% url 'logout' %}">logout</a></li>
+              {% else %}
+              <li>You are not logged in</li>
+              <li><a href="{% url 'login' %}">login</a></li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+      <ul class="nav nav1">
+        <li class="nav-item col">
+          <a class="nav-link" href="{% url 'leagues' %}">Leagues</a>
+        </li>
+        <li class="nav-item col">
+          <a class="nav-link" href="{% url 'research' %}">Research</a>
+        </li>
+        <li class="nav-item col">
+          <a class="nav-link" href="{% url 'mock' %}">Mock Draft</a>
+        </li>
+        <li class="nav-item col">
+          <a class="nav-link" href="{% url 'podcasts' %}">Podcasts</a>
+        </li>
+      </ul>
+    </div>
+    <ul class="nav nav2" data-url="{{ page }}">
+      <li class="nav-item col daily">
+        <a class="nav-link nav-bottom" href="javascript:fill_page('Daily')" data-name="Daily">Daily</a>
+      </li>
+      <li class="nav-item col redraft">
+        <a class="nav-link nav-bottom" href="javascript:fill_page('Redraft')" data-name="Redraft">Redraft</a>
+      </li>
+      <li class="nav-item col dynasty">
+        <a class="nav-link nav-bottom" href="javascript:fill_page('Dynasty')" data-name="Dynasty">Dynasty</a>
+      </li>
+      <li class="nav-item col best_ball">
+        <a class="nav-link nav-bottom" href="javascript:fill_page('Best_Ball')" data-name="Best_Ball">Best Ball</a>
+      </li>
+    </ul>
+  </div>
+  <main>
+    {% block main %}
+    {% endblock %}
+  </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+{% block files %}
+{% endblock %}
+{% block script %}
+{% endblock %}
+</body>
+</html>

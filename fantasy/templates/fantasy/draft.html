@@ -1,0 +1,267 @@
+{% extends 'fantasy/base2.html' %}
+{% block main%}
+<div class="main-header" style="padding-bottom: 70px; background-color: white;">
+  <div class="row">
+    <div class="col-sm-12">
+      <h1>Draft</h1>
+    </div>
+  </div>
+</div>
+<div class="main-body" id="draft-height">
+  <div id="left-side">
+    <h5 style="padding-left: 12px;">Overall</h5>
+    <div id="overall">
+      {% for player in rankings %}
+      <div id="overall_{{ player.player.name }}">
+        {{ player.ranking }}. <a href="javascript:add_player('{{player.player.name}}')">{{ player.player.name }} {{ player.player.position }}<br></a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+  <div id="right-side">
+    <h5 style="padding-left: 80px;">Roster</h5>
+    <div id="QB_starter">
+      QB<br>
+    </div>
+    <div id="RB_starter">
+      RB<br>
+    </div>
+    <div id="RB2_starter">
+      RB<br>
+    </div>
+    <div id="WR_starter">
+      WR<br>
+    </div>
+    <div id="WR2_starter">
+      WR<br>
+    </div>
+    <div id="TE_starter">
+      TE<br>
+    </div>
+    <div id="DST_starter">
+      DST<br>
+    </div>
+    <div id="bench1">
+      BN<br>
+    </div>
+    <div id="bench2">
+      BN<br>
+    </div>
+    <div id="bench3">
+      BN<br>
+    </div>
+    <div id="bench4">
+      BN
+    </div>
+  </div>
+  <div id="fieldset">
+    {% for pick in picks %}
+    <div style="padding-bottom: 15px;">
+      <div class="fieldset_names" >{{ pick.player.name }} {{ pick.player.position }}</div>
+      {% for stat in stats%}
+        {% if stat.player.name == pick.player.name %}
+          {% if pick.player.position == 'QB' %}
+            {{ stat.passing }} passing {{ stat.TDs }} TDs
+          {% elif pick.player.position == 'RB' %}
+            {{ stat.rushing }} rushing {{ stat.receiving }} receiving {{ stat.TDs }} TDs
+          {% elif pick.player.position == 'WR' %}
+            {{ stat.receiving }} yards receiving {{ stat.TDs }} TDs
+          {% elif pick.player.position == 'TE' %}
+            {{ stat.receiving }} yards receiving {{ stat.TDs }} TDs
+          {% endif %}
+        {% endif %}
+      {% endfor %}
+      <button class="bg-primary fieldset_button" type="button" value="{{ pick.player.name }}">Draft</button>
+      <br>
+    </div>
+    {% endfor %}
+  </div>
+  <div id="main-rankings">
+    <div class='list'>
+      <h6 style="padding-left: 35px;">QB</h6>
+        {% for player in rankings %}
+          {% if player.player.position == 'QB' %}
+          <div id="QB_{{ player.player.name }}">
+            <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
+            <br>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class='list'>
+      <h6 style="padding-left: 35px;">RB</h6>
+        {% for player in rankings %}
+          {% if player.player.position == 'RB' %}
+          <div id="RB_{{ player.player.name }}">
+            <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
+              <br>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class='list'>
+      <h6 style="padding-left: 35px;">WR</h6>
+        {% for player in rankings %}
+          {% if player.player.position == 'WR' %}
+          <div id="WR_{{ player.player.name }}">
+            <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
+              <br>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class='list'>
+      <h6 style="padding-left: 35px;">TE</h6>
+        {% for player in rankings %}
+          {% if player.player.position == 'TE' %}
+          <div id="TE_{{ player.player.name }}">
+            <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
+              <br>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+    <div class='list'>
+      <h6 style="padding-left: 35px;">DST</h6>
+        {% for player in rankings %}
+          {% if player.player.position == 'DST' %}
+          <div id="DST_{{ player.player.name }}">
+            <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
+              <br>
+          </div>
+          {% endif %}
+        {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+playerlist = [];
+positionlist = [];
+statlist = [];
+
+$(document).ready(function(){
+
+  {% for pick in rankings%}
+    playerlist.push('{{ pick.player.name }}');
+    positionlist.push('{{ pick.player.position }}');
+    {% for stat in stats %}
+      {% if stat.player.name == pick.player.name %}
+        {% if pick.player.position == 'QB' %}
+          statlist.push('{{ stat.passing }} passing {{ stat.TDs }} TDs');
+        {% elif pick.player.position == 'RB' %}
+          statlist.push('{{ stat.rushing }} rushing {{ stat.receiving }} receiving {{ stat.TDs }} TDs');
+        {% elif pick.player.position == 'WR' %}
+          statlist.push('{{ stat.receiving }} yards receiving {{ stat.TDs }} TDs');
+        {% elif pick.player.position == 'TE' %}
+          statlist.push('{{ stat.receiving }} yards receiving {{ stat.TDs }} TDs');
+        {% endif %}
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+
+  draft_player();
+});
+
+function add_player(player){
+  var js_player;
+  var js_position;
+  var js_stat;
+
+  $.ajax({
+    url: "/update_fieldset",
+    dataType: 'json',
+    type: 'GET',
+    data: {
+      'player_list': playerlist,
+      'position_list': positionlist,
+      'stat_list': statlist,
+      'leagueid': "{{ league.id }}"
+    },
+    success: function(data){
+      text = "";
+
+      for (i = 0; i < data.names.length; i++) {
+        text = text.concat(
+         `
+         <div style="padding-bottom: 15px;">
+          <div class="fieldset_names">${data.names[i]} ${data.position[i]}</div>
+          ${data.stats[i]}
+          <button class="bg-primary fieldset_button" type="button" value="${data.names[i]}">Draft</button>
+          <br>
+          </div>`
+        );
+      }
+      $('#fieldset').html(text);
+
+      for (i = 0; i < playerlist.length; i++) {
+          if(playerlist[i] == player){
+            js_player = playerlist[i];
+            js_position = positionlist[i];
+            js_stat = statlist[i];
+          }
+      }
+
+      $('#fieldset').append(
+        `<div class="fieldset_names">${js_player} ${js_position}</div>
+         ${js_stat}
+         <button class="bg-primary fieldset_button" type="button" value="${js_player}">Draft</button>`
+      );
+    },
+    error: function() {
+      alert('there was an error');
+    }
+  });
+  draft_player();
+}
+
+function draft_player(){
+  $("button").click(function(event){
+    event.preventDefault();
+    name = this.value;
+    alert('{{ league.id }}');
+    $.ajax({
+      url: "/drafted_player",
+      dataType: 'json',
+      type: 'GET',
+      data: {
+        'name': name,
+        'league_id': "{{ league.id }}"
+      },
+      success: function(data){
+        $(`#overall_${data.name}`).html(`<div style="text-decoration: line-through; color: blue;">${data.name}</div>`);
+        $(`#${data.position}_${data.name}`).html(`<div style="text-decoration: line-through; color: blue;">${data.name}</div>`);
+
+        if (data.starting === True){
+          value = $(`#${data.position}_starter`).html();
+          if (value === `${data.position}<br>`){
+            $(`#${data.position}_starter`).html(`${data.position} ${data.name}<br>`);
+          }
+          else{
+            $(`#${data.position}2_starter`).html(`${data.position} ${data.name}<br>`);
+          }
+        }
+        else{
+          updated = False;
+          for (i = 1; i < 4; i++){
+            if ($(`#bench${i}`).html() === 'BN<br>'){
+              if (updated === False){
+                $(`#bench${i}`).html(`BN ${data.name}<br>`);
+                updated = True;
+              }
+            }
+          }
+          if (updated === False){
+            $('#bench4').html(`BN ${data.name}<br>`);
+          }
+        }
+      },
+      error: function(){
+        alert('there was an error');
+      }
+    });
+  });
+}
+</script>
+{% endblock %}

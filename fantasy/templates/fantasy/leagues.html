@@ -1,0 +1,65 @@
+{% extends 'fantasy/base2.html' %}
+{% block main%}
+  <div class="main-header">
+    <div class="row" id="spacing">
+      <div class="col-sm-2">Contest</div>
+      <div class="col-sm-2">Level</div>
+      <div class="col-sm-2">Teams</div>
+      <div class="col-sm-2">Record</div>
+      <div class="col-sm-2">lineup</div>
+      <div class="col-sm-2"></div>
+    </div>
+  </div>
+  <div class="main-body">
+    <ol>
+      {% for this_league in leagues_user %}
+      <li>
+        <div class="row">
+        <div class="col-sm-2" id="leagues_num">{{ this_league.league.league_type.contest }}</div>
+        <div class="col-sm-2" id="level">{{ this_league.number }} ${{ this_league.league.league_type.level }}</div>
+        {% if this_league.league.league_type.contest == 'Daily' %}
+        <div class="col-sm-2">{{ this_league.league.filled }}</div>
+        {% else %}
+        <div class="col-sm-2">{{ this_league.league.league_type.total_teams}}</div>
+        {% endif %}
+        <div class="col-sm-2">{{ this_league.wins }}/{{ this_league.loses}}</div>
+        <div id="{{ league.id }}" class="col-sm-2">
+          {% for qb in lineup_qb %}
+            {% if qb.league_user.league == this_league %}
+              QB:{{ qb.player.name }}
+            {% endif %}
+          {% endfor %}
+          {% for rb in lineup_rb %}
+            {% if rb.league_user.league == this_league %}
+              RB:{{ rb.player.name }}
+            {% endif %}
+          {% endfor %}
+          {% for wr in lineup_wr %}
+            {% if wr.league_user.league == this_league %}
+              WR:{{ wr.player.name }}
+            {% endif %}
+          {% endfor %}
+          {% for te in lineup_te %}
+            {% if te.league_user.league == this_league %}
+              TE:{{ te.player.name }}
+            {% endif %}
+          {% endfor %}
+        </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ol>
+  </div>
+
+{% endblock %}
+{% block files%}
+{% load static %}
+<script src="#"></script>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+function fill_page(name){
+
+}
+</script>
+{% endblock %}
