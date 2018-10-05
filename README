@@ -1,1 +1,5 @@
 Fantasy-Hub
+This application is using django as a framework, to download and run django you can find instructions at the url below. 
+https://docs.djangoproject.com/en/2.1/intro/tutorial01/
+This is a prototype for a fantasy football application that simplifies usually complex processes into a few simple pages as well as 
+being a resources for all formats of fantasy football currently used.
