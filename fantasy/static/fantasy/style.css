@@ -76,8 +76,10 @@ button {
   margin-left: 20px;
   color: white;
 }
-ol li {
-  list-style-position: inside;
+ol {
+  marin: auto;
+  float: none;
+  display: block;
 }
 #leagues_num{
 
@@ -158,4 +160,181 @@ ol li {
 .fieldset_button{
   float: right;
   margin-right: 2%;
+}
+.leaguehome-border{
+  position: relative;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+.leaguehome-border + .leaguehome-border{
+    border-left: 1px solid white;
+}
+
+#leaguehome-outer{
+  margin-bottom: 10px;
+  background-color: LightGrey;
+}
+#leaguehome-outer li a{
+  color: black;
+}
+#standings{
+  float: right;
+  width: 48%;
+  margin-right: 20px;
+}
+#lineup{
+  float: left;
+  width: 40%;
+  margin-left: 20px;
+}
+#leaguehome-first{
+  height: 400px;
+}
+#leaguehome-second{
+height: 400px;
+}
+#leaguehome-leagues{
+  float: left;
+  width: 40%;
+  margin-left: 20px;
+}
+#leaguehome-transactions{
+  float: right;
+  width: 48%;
+  margin-right: 20px;
+}
+.roster-left{
+  float: left;
+  width: 46%;
+  margin-left: 30px;
+  height: 500px;2
+  clear: none;
+}
+.roster-right{
+  float: right;
+  width: 46%;
+  margin-right: 30px;
+  height: 500px;
+  clear: none;
+}
+#league-lineup{
+  width: 76%;
+  height: 700px;
+  margin-left: 12%;
+  margin-right: 12%;
+}
+#league-transactions{
+  width: 76%;
+  height: 700px;
+  margin-left: 12%;
+  margin-right: 12%;
+}
+/* declare a 7 column grid on the table */
+#calendar {
+	width: 100%;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+#calendar tr, #calendar tbody {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+ width: 100%;
+}
+
+caption {
+	text-align: center;
+  grid-column: 1 / -1;
+  font-size: 130%;
+  font-weight: bold;
+  padding: 10px 0;
+}
+
+#calendar a {
+	color: #8e352e;
+	text-decoration: none;
+}
+
+#calendar td, #calendar th {
+	padding: 5px;
+	box-sizing:border-box;
+	border: 1px solid #ccc;
+}
+
+#calendar .weekdays {
+	background: blue;
+}
+
+
+#calendar .weekdays th {
+	text-align: center;
+	text-transform: uppercase;
+	line-height: 20px;
+	border: none !important;
+	padding: 10px 6px;
+	color: #fff;
+	font-size: 13px;
+}
+
+#calendar td {
+	min-height: 180px;
+  display: flex;
+  flex-direction: column;
+}
+
+#calendar .days li:hover {
+	background: #d3d3d3;
+}
+
+#calendar .date {
+	text-align: center;
+	margin-bottom: 5px;
+	padding: 4px;
+	background: #333;
+	color: #fff;
+	width: 20px;
+	border-radius: 50%;
+  flex: 0 0 auto;
+  align-self: flex-end;
+}
+#league-player-body{
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+#search{
+  margin-top: 25px;
+  margin-left: 12%;
+  width: 80%;
+}
+.lineup-name{
+  text-align: left;
+  margin-left: 4.5%;
+  margin-right: -2.8%;
+}
+.lineup-name2{
+  text-align: left;
+  margin-left: 3.5%;
+  margin-right: -11%;
+}
+.lineup-button{
+  margin-left: -4%;
+}
+.lineup-button2{
+  margin-left: -1%;
+}
+.roster-name{
+  text-align: left;
+  margin-right: 3.5%;
+}
+.roster-points{
+  margin-left: 4%;
+}
+.leagues-names{
+
+font-size: 14px;
+}
+.button-width{
+  width: 45px;
 }

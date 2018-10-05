@@ -18,6 +18,8 @@
 {% endblock %}
 {% block script %}
 <script type="text/javascript">
+//django templating language doesnt work in external js files
+//set variables here and call them in external files
 daily_page =
 `{% for league in leagues %}
   {% if league.league_type.contest == 'Daily' %}

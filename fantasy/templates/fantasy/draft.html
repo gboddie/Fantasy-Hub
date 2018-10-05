@@ -12,7 +12,7 @@
     <h5 style="padding-left: 12px;">Overall</h5>
     <div id="overall">
       {% for player in rankings %}
-      <div id="overall_{{ player.player.name }}">
+      <div id="overall_{{ player.ranking }}">
         {{ player.ranking }}. <a href="javascript:add_player('{{player.player.name}}')">{{ player.player.name }} {{ player.player.position }}<br></a>
       </div>
       {% endfor %}
@@ -21,67 +21,47 @@
   <div id="right-side">
     <h5 style="padding-left: 80px;">Roster</h5>
     <div id="QB_starter">
-      QB<br>
+      QB<span id="QB_starter_span"></span><br>
     </div>
     <div id="RB_starter">
-      RB<br>
+      RB<span id="RB_starter_span"></span><br>
     </div>
     <div id="RB2_starter">
-      RB<br>
+      RB<span id="RB2_starter_span"></span><br>
     </div>
     <div id="WR_starter">
-      WR<br>
+      WR<span id="WR_starter_span"></span><br>
     </div>
     <div id="WR2_starter">
-      WR<br>
+      WR<span id="WR2_starter_span"></span><br>
     </div>
     <div id="TE_starter">
-      TE<br>
+      TE<span id="TE_starter_span"></span><br>
     </div>
     <div id="DST_starter">
-      DST<br>
+      DST<span id="DST_starter_span"></span><br>
     </div>
     <div id="bench1">
-      BN<br>
+      BN<span id="bench1_span"></span><br>
     </div>
     <div id="bench2">
-      BN<br>
+      BN<span id="bench2_span"></span><br>
     </div>
     <div id="bench3">
-      BN<br>
+      BN<span id="bench3_span"></span><br>
     </div>
     <div id="bench4">
-      BN
+      BN<span id="bench4_span"></span>
     </div>
   </div>
   <div id="fieldset">
-    {% for pick in picks %}
-    <div style="padding-bottom: 15px;">
-      <div class="fieldset_names" >{{ pick.player.name }} {{ pick.player.position }}</div>
-      {% for stat in stats%}
-        {% if stat.player.name == pick.player.name %}
-          {% if pick.player.position == 'QB' %}
-            {{ stat.passing }} passing {{ stat.TDs }} TDs
-          {% elif pick.player.position == 'RB' %}
-            {{ stat.rushing }} rushing {{ stat.receiving }} receiving {{ stat.TDs }} TDs
-          {% elif pick.player.position == 'WR' %}
-            {{ stat.receiving }} yards receiving {{ stat.TDs }} TDs
-          {% elif pick.player.position == 'TE' %}
-            {{ stat.receiving }} yards receiving {{ stat.TDs }} TDs
-          {% endif %}
-        {% endif %}
-      {% endfor %}
-      <button class="bg-primary fieldset_button" type="button" value="{{ pick.player.name }}">Draft</button>
-      <br>
-    </div>
-    {% endfor %}
   </div>
   <div id="main-rankings">
     <div class='list'>
       <h6 style="padding-left: 35px;">QB</h6>
         {% for player in rankings %}
           {% if player.player.position == 'QB' %}
-          <div id="QB_{{ player.player.name }}">
+          <div id="QB_{{ player.ranking }}">
             <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
             <br>
           </div>
@@ -92,7 +72,7 @@
       <h6 style="padding-left: 35px;">RB</h6>
         {% for player in rankings %}
           {% if player.player.position == 'RB' %}
-          <div id="RB_{{ player.player.name }}">
+          <div id="RB_{{ player.ranking }}">
             <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
               <br>
           </div>
@@ -103,7 +83,7 @@
       <h6 style="padding-left: 35px;">WR</h6>
         {% for player in rankings %}
           {% if player.player.position == 'WR' %}
-          <div id="WR_{{ player.player.name }}">
+          <div id="WR_{{ player.ranking }}">
             <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
               <br>
           </div>
@@ -114,7 +94,7 @@
       <h6 style="padding-left: 35px;">TE</h6>
         {% for player in rankings %}
           {% if player.player.position == 'TE' %}
-          <div id="TE_{{ player.player.name }}">
+          <div id="TE_{{ player.ranking }}">
             <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
               <br>
           </div>
@@ -125,7 +105,7 @@
       <h6 style="padding-left: 35px;">DST</h6>
         {% for player in rankings %}
           {% if player.player.position == 'DST' %}
-          <div id="DST_{{ player.player.name }}">
+          <div id="DST_{{ player.ranking }}">
             <a href="javascript:add_player('{{ player.player.name }}')">{{ player.player.name }}</a>
               <br>
           </div>
@@ -137,37 +117,86 @@
 {% endblock %}
 {% block script %}
 <script type="text/javascript">
+//global variables
 playerlist = [];
+rankinglist = [];
 positionlist = [];
 statlist = [];
+draft_count = 0;
+round = 1;
 
 $(document).ready(function(){
-
-  {% for pick in rankings%}
+  //copy django template lists to js lists so they can be used in js computation
+  {% for pick in rankings %}
     playerlist.push('{{ pick.player.name }}');
     positionlist.push('{{ pick.player.position }}');
+    rankinglist.push('{{ pick.ranking }}')
     {% for stat in stats %}
       {% if stat.player.name == pick.player.name %}
         {% if pick.player.position == 'QB' %}
-          statlist.push('{{ stat.passing }} passing {{ stat.TDs }} TDs');
+          statlist.push('{{ stat.passing_yards }} passing {{ stat.passing_tds }} TDs');
         {% elif pick.player.position == 'RB' %}
-          statlist.push('{{ stat.rushing }} rushing {{ stat.receiving }} receiving {{ stat.TDs }} TDs');
+          statlist.push('{{ stat.rushing_yards }} rushing {{ stat.receiving_yards }} receiving {{ stat.rushing_tds|add:stat.receiving_tds }} TDs');
         {% elif pick.player.position == 'WR' %}
-          statlist.push('{{ stat.receiving }} yards receiving {{ stat.TDs }} TDs');
+          statlist.push('{{ stat.receiving_yards }} yards receiving {{ stat.receiving_tds }} TDs');
         {% elif pick.player.position == 'TE' %}
-          statlist.push('{{ stat.receiving }} yards receiving {{ stat.TDs }} TDs');
+          statlist.push('{{ stat.receiving_yards }} yards receiving {{ stat.receiving_tds }} TDs');
         {% endif %}
       {% endif %}
     {% endfor %}
   {% endfor %}
-
-  draft_player();
+  add_player();
+  before();
 });
+//auto picks before user pick, updates available players, calls event listener for user pick
+function before(){
+    var odd = 11 + parseInt({{ position }}) - 12;
+    var even = 12 - parseInt({{ position }})
 
-function add_player(player){
+    if (round % 2 == 0){
+      for (i = 0; i < even; i++){
+        auto_pick();
+      }
+    }
+    else{
+      for (i = 0; i < odd; i++){
+        auto_pick();
+      }
+    }
+  //timing issue checks for available players running before auto picks complete tried a promise but never ran correctly
+  setTimeout(add_player, 3000);
+  draft_player();
+}
+//auto picks remaining picks in round after user pick then updates round and calls before if not end of draft
+function after(){
+  var even = 11 + parseInt({{ position }}) - 12;
+  var odd = 12 - parseInt({{ position }})
+
+  if (round % 2 == 0){
+    for (i = 0; i < even; i++){
+      auto_pick();
+    }
+  }
+  else{
+    for (i = 0; i < odd; i++){
+      auto_pick();
+    }
+  }
+  round++;
+
+  if (round < 12){
+      before();
+  }
+  else{
+    alert('Your Draft is complete');
+  }
+}
+//adds player to fieldset/queue area for drafting
+function add_player(player ="No Player"){
   var js_player;
   var js_position;
   var js_stat;
+  var js_rank;
 
   $.ajax({
     url: "/update_fieldset",
@@ -176,51 +205,59 @@ function add_player(player){
     data: {
       'player_list': playerlist,
       'position_list': positionlist,
+      'ranking_list': rankinglist,
       'stat_list': statlist,
       'leagueid': "{{ league.id }}"
     },
     success: function(data){
       text = "";
-
+      //update fieldset with highest ranked available players
       for (i = 0; i < data.names.length; i++) {
         text = text.concat(
          `
          <div style="padding-bottom: 15px;">
           <div class="fieldset_names">${data.names[i]} ${data.position[i]}</div>
           ${data.stats[i]}
-          <button class="bg-primary fieldset_button" type="button" value="${data.names[i]}">Draft</button>
+          <button class="bg-primary fieldset_button" type="button" value="${data.names[i]}" data-ranking="${data.ranking[i]}">Draft</button>
           <br>
           </div>`
         );
       }
       $('#fieldset').html(text);
 
-      for (i = 0; i < playerlist.length; i++) {
-          if(playerlist[i] == player){
-            js_player = playerlist[i];
-            js_position = positionlist[i];
-            js_stat = statlist[i];
-          }
-      }
+      if (player === 'No Player')
+      {
 
-      $('#fieldset').append(
-        `<div class="fieldset_names">${js_player} ${js_position}</div>
-         ${js_stat}
-         <button class="bg-primary fieldset_button" type="button" value="${js_player}">Draft</button>`
-      );
+      }
+      else{
+        //add user selected player to fieldset
+        for (i = 0; i < playerlist.length; i++) {
+            if(playerlist[i] == player){
+              js_player = playerlist[i];
+              js_position = positionlist[i];
+              js_stat = statlist[i];
+              js_rank = rankinglist[i];
+            }
+        }
+
+        $('#fieldset').append(
+          `<div class="fieldset_names">${js_player} ${js_position}</div>
+           ${js_stat}
+           <button class="bg-primary fieldset_button" type="button" value="${js_player}" data-ranking="${js_rank}">Draft</button>`
+        );
+      }
     },
     error: function() {
       alert('there was an error');
     }
   });
-  draft_player();
 }
-
+//changes selected players draft value to true and removes him from available list
 function draft_player(){
-  $("button").click(function(event){
+  $(document.body).on('click', 'button', function(event){
     event.preventDefault();
     name = this.value;
-    alert('{{ league.id }}');
+    ranking = this.dataset.ranking;
     $.ajax({
       url: "/drafted_player",
       dataType: 'json',
@@ -230,37 +267,66 @@ function draft_player(){
         'league_id': "{{ league.id }}"
       },
       success: function(data){
-        $(`#overall_${data.name}`).html(`<div style="text-decoration: line-through; color: blue;">${data.name}</div>`);
-        $(`#${data.position}_${data.name}`).html(`<div style="text-decoration: line-through; color: blue;">${data.name}</div>`);
-
-        if (data.starting === True){
-          value = $(`#${data.position}_starter`).html();
-          if (value === `${data.position}<br>`){
-            $(`#${data.position}_starter`).html(`${data.position} ${data.name}<br>`);
-          }
-          else{
-            $(`#${data.position}2_starter`).html(`${data.position} ${data.name}<br>`);
-          }
+        //if some error occurs such as attempting to draft drafted player update available players across page
+        if (data.error){
+          add_player();
         }
         else{
-          updated = False;
-          for (i = 1; i < 4; i++){
-            if ($(`#bench${i}`).html() === 'BN<br>'){
-              if (updated === False){
-                $(`#bench${i}`).html(`BN ${data.name}<br>`);
-                updated = True;
+          //cross out drafted players
+          $(`#overall_${ranking}`).html(`<div style="text-decoration: line-through; color: LightGrey;">${ranking}. ${data.name}</div>`);
+            $(`#${data.position}_${ranking}`).html(`<div style="text-decoration: line-through; color: LightGrey;">${data.name}</div>`);
+            //add players to roster section
+            if (data.starting === true){
+              value = $(`#${data.position}_starter_span`).html();
+              if (value === ''){
+                $(`#${data.position}_starter_span`).html(`&nbsp;&nbsp;${data.name}`);
+              }
+              else{
+                $(`#${data.position}2_starter_span`).html(`&nbsp;&nbsp;${data.name}`);
               }
             }
-          }
-          if (updated === False){
-            $('#bench4').html(`BN ${data.name}<br>`);
-          }
+            else{
+              updated = false;
+              for (i = 1; i < 4; i++){
+                if ($(`#bench${i}_span`).html() === ''){
+                  if (updated === false){
+                    $(`#bench${i}_span`).html(`&nbsp;&nbsp;${data.name}`);
+                    updated = true;
+                  }
+                }
+              }
+              if (updated === false){
+                $('#bench4_span').html(`&nbsp;&nbsp;${data.name}`);
+              }
+            }
+            //call after function to continue draft
+            after();
         }
       },
       error: function(){
         alert('there was an error');
       }
     });
+  });
+}
+//auto pick a single player
+function auto_pick(){
+  $.ajax({
+    url: "/auto",
+    dataType: 'json',
+    type: 'GET',
+    data: {
+      'league_id': "{{ league.id }}",
+      'player_list': playerlist
+    },
+    success: function(data){
+      //cross out drafted player in list
+      $(`#overall_${data.ranking}`).html(`<div style="text-decoration: line-through; color: LightGrey;">${data.ranking}. ${data.name}</div>`);
+      $(`#${data.position}_${data.ranking}`).html(`<div style="text-decoration: line-through; color: LightGrey;">${data.name}</div>`);
+    },
+    error: function(){
+      alert('there was an error');
+    }
   });
 }
 </script>

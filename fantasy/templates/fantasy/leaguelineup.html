@@ -1,0 +1,316 @@
+{% extends 'fantasy/base2.html' %}
+{% block main %}
+<ul class="nav" id="leaguehome-outer">
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguehome{{ league.id }}">Home</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguerosters{{ league.id }}">Rosters</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leagueplayers{{ league.id }}">Players</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguetransactions{{ league.id }}">Transactions</a>
+  </li>
+  <li class="nav-item col leaguehome-border" style="background-color: grey;">
+    <a class="nav-link" href="/leaguelineup{{ league.id }}">Lineup</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguedraft{{ league.id }}">Draft</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguecalendar{{ league.id }}">Calendar</a>
+  </li>
+</ul>
+
+<div id="league-lineup">
+  <h3>Lineup</h3>
+  <div class="main-header">
+    <div class="row">
+      <div class="col-sm-1">Pos</div>
+      <div class="col-sm-2">Player</div>
+      <div class="col-sm-1"></div>
+      <div class="col-sm-2">Bye</div>
+      <div class="col-sm-2">points</div>
+      <div class="col-sm-2">proj pts</div>
+      <div class="col-sm-1">News</div>
+    </div>
+  </div>
+  <div id="lineup-body">
+    {% for player in roster %}
+      {% if player.player.position == 'QB' %}
+      <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+        {% if player.starting == True %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+        </div>
+        {% else %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">BN</button>
+        </div>
+        {% endif %}
+          <div class="col-sm-4 lineup-name2">{{ player.player.name }}</div>
+          <div class="col-sm-2">{{ player.player.bye_week }}</div>
+          {% for points in fantasy_points %}
+            {% if points.player.name == player.player.name %}
+              <div class="col-sm-2">{{ points.total_points }}</div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-sm-2"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for player in roster %}
+      {% if player.player.position == 'RB' %}
+      <div class="row" id="row{{ player.player.id }}{{player.starting}}">
+        {% if player.starting == True %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">RB</button>
+        </div>
+        {% else %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">BN</button>
+        </div>
+        {% endif %}
+          <div class="col-sm-4 lineup-name2">{{ player.player.name }}</div>
+          <div class="col-sm-2">{{ player.player.bye_week }}</div>
+          {% for points in fantasy_points %}
+            {% if points.player.name == player.player.name %}
+              <div class="col-sm-2">{{ points.total_points }}</div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-sm-2"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for player in roster %}
+      {% if player.player.position == 'WR' %}
+      <div class="row" id="row{{ player.player.id }}{{player.starting}}">
+        {% if player.starting == True %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">WR</button>
+        </div>
+        {% else %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">BN</button>
+        </div>
+        {% endif %}
+
+          <div class="col-sm-4 lineup-name2">{{ player.player.name }}</div>
+          <div class="col-sm-2">{{ player.player.bye_week }}</div>
+          {% for points in fantasy_points %}
+            {% if points.player.name == player.player.name %}
+              <div class="col-sm-2">{{ points.total_points }}</div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-sm-2"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for player in roster %}
+      {% if player.player.position == 'TE' %}
+      <div class="row" id="row{{ player.player.id }}{{player.starting}}">
+        {% if player.starting == True %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">TE</button>
+        </div>
+        {% else %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">BN</button>
+        </div>
+        {% endif %}
+          <div class="col-sm-4 lineup-name2">{{ player.player.name }}</div>
+          <div class="col-sm-2">{{ player.player.bye_week }}</div>
+          {% for points in fantasy_points %}
+            {% if points.player.name == player.player.name %}
+              <div class="col-sm-2">{{ points.total_points }}</div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-sm-2"></div>
+        </div>
+      {% endif %}
+    {% endfor %}
+
+    {% for player in roster %}
+      {% if player.player.position == 'DST' %}
+      <div class="row" id="row{{ player.player.id }}{{player.starting}}">
+        {% if player.starting == True %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">DST</button>
+        </div>
+        {% else %}
+        <div class="col-sm-1 lineup-button2">
+          <button class="bg-primary button-width" type="button" value='{{ player.player.id }}' data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">BN</button>
+        </div>
+        {% endif %}
+          <div class="col-sm-4 lineup-name2">{{ player.player.name }}</div>
+          <div class="col-sm-2">{{ player.player.bye_week }}</div>
+          {% for points in fantasy_points %}
+            {% if points.player.name == player.player.name %}
+              <div class="col-sm-2">{{ points.total_points }}</div>
+            {% endif %}
+          {% endfor %}
+          <div class="col-sm-2"></div>
+          </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+//global variables
+starting = '';
+other_id = '';
+position = '';
+idlist = [];
+positionlist = [];
+
+$(document).ready(function(){
+  //copy django template list into js list
+    {% for player in roster %}
+      idlist.push('{{ player.player.id }}');
+      positionlist.push('{{ player.player.position }}');
+    {% endfor %}
+});
+
+//highlights and swaps lineup positions
+function swapper(id, pos, start){
+  if (other_id == id){
+    //reset
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    starting = '';
+    other_id = '';
+    position = '';
+  }//if current selected player is a bench player and previous selection is a valid starter player
+  else if (starting == 'True' && start == 'False' && position == pos){
+    //reset background color
+    for (i = 0; i < idlist.length; i++){
+      if (position == positionlist[i]){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+      }
+    }
+    //swap
+    swap(id);
+    //get elements inner html
+    starter = $(`#row${other_id}True`).html();
+    bench = $(`#row${id}False`).html();
+    //update elements id values
+    $(`#row${other_id}True`).attr('id', `row${id}True`);
+    $(`#row${id}False`).attr('id', `row${other_id}False`);
+    //exchange inner html
+    $(`#row${id}True`).html(bench);
+    $(`#row${other_id}False`).html(starter);
+    //get text values of elements button tag
+    first = $(`#row${id}True button`).text();
+    second = $(`#row${other_id}False button`).text();
+    //exchange button values
+    $(`#row${id}True button`).text(second);
+    $(`#row${other_id}False button`).text(first);
+    //update dataset starting value
+    $(`#row${id}True button`).attr("data-starting", "True");
+    $(`#row${other_id}False button`).attr("data-starting", "False");
+
+    //reset variables
+    starting = '';
+    other_id = '';
+    position = '';
+  }
+    //if current selection in a starter and previous selection is a valid bench player
+  else if (starting == 'False' && start == 'True' && position == pos){
+    //reset background color
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //swap
+    swap(id);
+    //get elements inner html
+    starter = $(`#row${id}True`).html();
+    bench = $(`#row${other_id}False`).html();
+    //update elements id values
+    $(`#row${id}True`).attr('id', `row${other_id}True`);
+    $(`#row${other_id}False`).attr('id', `row${id}False`);
+    //exchange inner html
+    $(`#row${other_id}True`).html(bench);
+    $(`#row${id}False`).html(starter);
+    //get text values of elements button tag
+    first = $(`#row${other_id}True button`).text();
+    second = $(`#row${id}False button`).text();
+    //exchange button values
+    $(`#row${other_id}True button`).text(second);
+    $(`#row${id}False button`).text(first);
+    //change onclick function to match starting value
+    $(`#row${other_id}True button`).attr("data-starting", "True");
+    $(`#row${id}False button`).attr("data-starting", "False");
+
+    //reset variables
+    starting = '';
+    other_id = '';
+    position = '';
+
+  }//set focus on this player
+  else if (start == 'True') {
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //set focus on this player
+    $(`#row${id}True`).css("background-color", "LightCyan");
+
+    for (i = 0; i < idlist.length; i++){
+      if (pos == positionlist[i] && idlist[i] != id){
+        $(`#row${idlist[i]}False`).css("background-color", "LightGreen");
+      }
+    }
+    starting = 'True';
+    other_id = id;
+    position = pos;
+  }//set focus on this player
+  else if (start == 'False'){
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //set focus on this player
+    $(`#row${id}False`).css("background-color", "LightCyan");
+
+    for (i = 0; i < idlist.length; i++){
+      if (pos == positionlist[i] && idlist[i] != id){
+        $(`#row${idlist[i]}True`).css("background-color", "LightGreen");
+      }
+    }
+    starting = 'False';
+    other_id = id;
+    position = pos;
+  }
+}
+//if valid lineup request exchange starting values
+function swap(id){
+    $.ajax({
+      url:'/swap',
+      dataType: 'json',
+      type: 'GET',
+      data: {
+        'league_user_id': '{{ league_user.id }}' ,
+        'id': id,
+        'otherid': other_id
+      },
+      success: function(data){
+        //continue
+      },
+      error: function(){
+        alert('there was an error');
+      }
+    });
+}
+</script>
+{% endblock %}

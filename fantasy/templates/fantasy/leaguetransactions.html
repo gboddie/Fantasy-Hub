@@ -1,0 +1,51 @@
+{% extends 'fantasy/base2.html' %}
+{% block main %}
+<ul class="nav" id="leaguehome-outer">
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguehome{{ league.id }}">Home</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguerosters{{ league.id }}">Rosters</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leagueplayers{{ league.id }}">Players</a>
+  </li>
+  <li class="nav-item col leaguehome-border" style="background-color: grey;">
+    <a class="nav-link" href="/leaguetransactions{{ league.id }}">Transactions</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguelineup{{ league.id }}">Lineup</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguedraft{{ league.id }}">Draft</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguecalendar{{ league.id }}">Calendar</a>
+  </li>
+</ul>
+
+<div id="league-transactions">
+  <h3>Transactions</h3>
+  <div class="main-header">
+    <div class="row">
+      <div class="col-sm-3" style="margin-left: 20px;">Franchise</div>
+    </div>
+  </div>
+  <div class="main-body">
+    {% for tran in transaction %}
+      <div class="col-sm-3"> {{ tran.league_user1.team_name }}</div>
+      {% if tran.league_user2.users.id == '4' %}
+        <div class="col-sm-3"><b style="color: blue;">&#43;</b>&nbsp;{{ tran.player1.player.name }}&nbsp;<small>{{ tran.player1.player.team.location }}-{{ tran.player1.player.position}}</small></div>
+        <div class="col-sm-3"><b style="color: blue;">&#8722;</b>&nbsp;{{ tran.player2.player.name }}&nbsp;<small>{{ tran.player2.player.team.location }}-{{tran.player2.player.position}}</small></div>
+        <div class="col-sm-1"></div>
+        <div class="col-sm-3">{{ tran.date }}</div>
+      {% else %}
+        <div class="col-sm-3">{{ tran.player1.player.name }}</div>
+        <div class="col-sm-1"><b style="color: blue;">&#8646;</b></div>
+        <div class="col-sm-3">{{ tran.player2.player.name }}</div>
+        <div class="col-sm-3">{{ tran.date }}</div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

@@ -1,65 +1,67 @@
 {% extends 'fantasy/base2.html' %}
-{% block main%}
-  <div class="main-header">
+{% block main %}
+  <div class="main-header" style="padding-left: 40px;">
     <div class="row" id="spacing">
-      <div class="col-sm-2">Contest</div>
-      <div class="col-sm-2">Level</div>
-      <div class="col-sm-2">Teams</div>
-      <div class="col-sm-2">Record</div>
-      <div class="col-sm-2">lineup</div>
-      <div class="col-sm-2"></div>
+      <div class="col-sm-1" style="margin-left: .2%;">Contest</div>
+      <div class="col-sm-1">Level</div>
+      <div class="col-sm-1">Teams</div>
+      <div class="col-sm-1">Record</div>
+      <div class="col-sm-4" style="margin-left: 8%;">lineup</div>
     </div>
   </div>
   <div class="main-body">
     <ol>
-      {% for this_league in leagues_user %}
+      {% for this_league in user_leagues %}
       <li>
-        <div class="row">
-        <div class="col-sm-2" id="leagues_num">{{ this_league.league.league_type.contest }}</div>
-        <div class="col-sm-2" id="level">{{ this_league.number }} ${{ this_league.league.league_type.level }}</div>
-        {% if this_league.league.league_type.contest == 'Daily' %}
-        <div class="col-sm-2">{{ this_league.league.filled }}</div>
-        {% else %}
-        <div class="col-sm-2">{{ this_league.league.league_type.total_teams}}</div>
-        {% endif %}
-        <div class="col-sm-2">{{ this_league.wins }}/{{ this_league.loses}}</div>
-        <div id="{{ league.id }}" class="col-sm-2">
-          {% for qb in lineup_qb %}
-            {% if qb.league_user.league == this_league %}
-              QB:{{ qb.player.name }}
-            {% endif %}
-          {% endfor %}
-          {% for rb in lineup_rb %}
-            {% if rb.league_user.league == this_league %}
-              RB:{{ rb.player.name }}
-            {% endif %}
-          {% endfor %}
-          {% for wr in lineup_wr %}
-            {% if wr.league_user.league == this_league %}
-              WR:{{ wr.player.name }}
-            {% endif %}
-          {% endfor %}
-          {% for te in lineup_te %}
-            {% if te.league_user.league == this_league %}
-              TE:{{ te.player.name }}
-            {% endif %}
-          {% endfor %}
+        <a href="/leaguehome{{ this_league.league.id }}">
+          <div class="row">
+          <div class="col-sm-1" id="leagues_num" style="margin-left: 1%; text-align: left;">{{ this_league.league.league_type.contest }} {{ this_league.number }} </div>
+          <div class="col-sm-1" id="level" style="margin-left: -1%;">${{ this_league.league.league_type.level }}</div>
+          {% if this_league.league.league_type.contest == 'Daily' %}
+          <div class="col-sm-1">{{ this_league.league.filled }}</div>
+          {% else %}
+          <div class="col-sm-1">{{ this_league.league.league_type.total_teams}}</div>
+          {% endif %}
+          <div class="col-sm-1">{{ this_league.wins }}-{{ this_league.loses}}-{{ this_league.ties }}</div>
+            {% for QB in lineup_QB %}
+            <div class="col-sm-2" style="margin-left: -5.7%; margin-right: 1%; font-size: 14px;">
+              {% if QB.league_user.league == this_league.league %}
+                <span style="color: blue;">QB:</span> {{ QB.player.name }}
+              {% endif %}
+              </div>
+            {% endfor %}
+            {% for RB in lineup_RB %}
+            <div class="col-sm-2 leagues-names" style="margin-left: -8.8%;">
+              {% if RB.league_user.league == this_league.league %}
+                <span style="color: blue;">RB:</span> {{ RB.player.name }}
+              {% endif %}
+              </div>
+            {% endfor %}
+            {% for WR in lineup_WR %}
+            <div class="col-sm-2 leagues-names" style="margin-left: -7.8%;">
+              {% if WR.league_user.league == this_league.league %}
+                <span style="color: blue;">WR:</span> {{ WR.player.name }}
+              {% endif %}
+            </div>
+            {% endfor %}
+            {% for TE in lineup_TE %}
+            <div class="col-sm-2 leagues-names" style="margin-left: -7.8%;">
+              {% if TE.league_user.league == this_league.league %}
+                <span style="color: blue;">TE:</span> {{ TE.player.name }}
+              {% endif %}
+              </div>
+            {% endfor %}
+            {% for DST in lineup_DST %}
+            <div class="col-sm-2 leagues-names" style="margin-left: -6.2%;">
+              {% if DST.league_user.league == this_league.league %}
+                <span style="color: blue;">DST:</span> {{ DST.player.name }}
+              {% endif %}
+            </div>
+            {% endfor %}
         </div>
-        </div>
-      </li>
+      </a>
+    </li>
       {% endfor %}
     </ol>
   </div>
-
-{% endblock %}
-{% block files%}
-{% load static %}
-<script src="#"></script>
-{% endblock %}
-{% block script %}
-<script type="text/javascript">
-function fill_page(name){
-
-}
-</script>
 {% endblock %}

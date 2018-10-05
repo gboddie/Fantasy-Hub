@@ -1,0 +1,206 @@
+{% extends 'fantasy/base2.html' %}
+{% block main %}
+<ul class="nav" id="leaguehome-outer">
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguehome{{ league.id }}">Home</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguerosters{{ league.id }}">Rosters</a>
+  </li>
+  <li class="nav-item col leaguehome-border" style="background-color: grey;">
+    <a class="nav-link" href="/leagueplayers{{ league.id }}">Players</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguetransactions{{ league.id }}">Transactions</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguelineup{{ league.id }}">Lineup</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguedraft{{ league.id }}">Draft</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguecalendar{{ league.id }}">Calendar</a>
+  </li>
+</ul>
+<div id="league-players">
+    <h3>Players</h3>
+    <div id="search">
+      <div class="row">
+        <div class="form-group col-sm-2">
+          <label for="status">Status</label>
+          <select class="form-control" id="status">
+            <option>All Players</option>
+            <option selected="selected">Free Agents</option>
+            {% for user in all_users %}
+              <option>{{ user.team_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group col-2">
+          <label for="position">Position</label>
+          <select class="form-control" id="position">
+            <option>Offense</option>
+            <option>QB</option>
+            <option>WR</option>
+            <option>RB</option>
+            <option>TE</option>
+            <option>DST</option>
+          </select>
+        </div>
+        <div class="form-group col-sm-2">
+          <label for="team">Team</label>
+          <select class="form-control" id="team">
+            <option>All</option>
+            {% for team in nfl_teams %}
+              <option>{{ team.mascot }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+    </div>
+    <div id="league-player-body">
+
+      <div class="row" style="margin-bottom: 10px; margin-top: 20px;">
+        <div class="col-3"></div>
+        <div class="col-1" style="margin-left: 6.4%;">Passing</div>
+        <div class="col-1">Rushing</div>
+        <div class="col-1" style="margin-left: .7%;">Receiving</div>
+        <div class="col-1" style="margin-left: .3%;">Ret</div>
+        <div>Misc</div>
+        <div class="col-1">Fum</div>
+      </div>
+      <div class="main-header">
+        <div class="row">
+          <div class="col-2" style="margin-left: -1.5%; margin-right: 1.5%;">Players</div>
+          <div class="col-1" style="margin-left: 1.5%;">Bye</div>
+          <div style="margin-left: .4%; margin-right: 1.5%;">Pts</div>
+          <div class="col-1">Yds&nbsp;&nbsp;TD&nbsp;&nbsp;Int</div>
+          <div class="col-1" style="margin-left: 1%;">Yds&nbsp;&nbsp;TD</div>
+          <div class="col-1">Yds&nbsp;&nbsp;Cat&nbsp;&nbsp;TD</div>
+          <div class="col-1" style="margin-left: 1.1%;">TD</div>
+          <div style="margin-left: .3%;">2PT</div>
+          <div class="col-1">Lost</div>
+          <div class="col-2">Owner</div>
+        </div>
+      </div>
+      <div id="players">
+        {% for player in free_agents %}
+          <div class="row">
+            <div class="col-2" style="text-align: left; padding-left: 25px;">{{ player.player.name }}</div>
+            <div class="col-1" style="margin-left: 1.5%;">{{ player.player.bye_week }}</div>
+            {% for points in fantasy_points %}
+              {% if points.player.name == player.player.name %}
+                <div class="col-1" style="margin-left: -2.7%;">{{ points.total_points }}</div>
+              {% endif %}
+            {% endfor %}
+            {% for stat in stats %}
+              {% if stat.player.name == player.player.name %}
+                <div class="col-1" style="margin-left: -1%;">
+                  {{ stat.passing_yards }}  &nbsp;&nbsp;
+                  {{ stat.passing_tds }}    &nbsp;&nbsp;
+                  {{ stat.passing_interceptions }}
+                </div>
+                <div class="col-1">
+                  {{ stat.rushing_yards }}  &nbsp;
+                  {{ stat.rushing_tds }}
+                </div>
+                <div class="col-2" style="margin-left: -3.2%;">
+                  {{ stat.receiving_yards }} &nbsp;
+                  {{ stat.catches }}         &nbsp;&nbsp;
+                  {{ stat.receiving_tds }}
+                </div>
+                <div class="col-1" style="margin-left: -3.8%;">{{ stat.return_tds }}</div>
+                <div style="margin-left: .8%;">{{ stat.two_pt }}</div>
+                <div class="col-1" style="margin-left: 1.1%;">{{ stat.fumbles }}</div>
+              {% endif %}
+            {% endfor %}
+            <div class="col-2">{{ player.league_user.team_name }}</div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+</div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+$(document).ready(function(){
+  //if select tag changes state
+  $("select").change(function(){
+    //get values of all select tags
+    status = $('#status').find(":selected").text();
+    position = $('#position').find(":selected").text();
+    team = $('#team').find(":selected").text();
+      //request filter list of league players
+      $.ajax({
+        url:'/change',
+        dataType: 'json',
+        type: 'GET',
+        data: {
+          'leagueid': "{{ league.id }}",
+          'status': status,
+          'position': position,
+          'team': team
+        },
+        success: function(data){
+          //parse json strings into json objects
+          players = JSON.parse(data.players)
+          points = JSON.parse(data.fantasy_points)
+          stats = JSON.parse(data.stats)
+          text ='';
+
+          //player and corresponding data per row
+          for (i in players){
+            text = text.concat(
+             `<div class="row">
+                <div class="col-2" style="text-align: left; padding-left: 25px;">${players[i].name}</div>
+                <div class="col-1" style="margin-left: 1.5%;">${players[i].bye}</div>
+            `);
+            for (j in points){
+              if (points[j].name == players[i].name){
+                text = text.concat(
+                 `  <div class="col-1" style="margin-left: -2.7%;">${points[j].total}</div>
+                 `);
+
+               }
+             }
+             for (j in stats){
+               if(stats[j].name == players[i].name){
+                 text = text.concat(
+                 `   <div class="col-1" style="margin-left: -1%;">
+                      ${stats[j].passing_yards}  &nbsp;&nbsp;
+                      ${stats[j].passing_tds}    &nbsp;&nbsp;
+                      ${stats[j].passing_interceptions}
+                    </div>
+                    <div class="col-1">
+                      ${stats[j].rushing_yards } &nbsp;
+                      ${stats[j].rushing_tds}
+                    </div>
+                    <div class="col-2" style="margin-left: -3.2%;">
+                      ${stats[j].receiving_yards}&nbsp;
+                      ${stats[j].catches}        &nbsp;&nbsp;
+                      ${stats[j].receiving_tds}
+                    </div>
+                    <div class="col-1" style="margin-left: -3.8%;">${stats[j].return_tds}</div>
+                    <div style="margin-left: .8%;">${stats[j].two_pt}</div>
+                    <div class="col-1" style="margin-left: 1.1%;">${stats[j].fumbles}</div>
+                `);
+              }
+            }
+            text = text.concat(
+              `  <div class="col-2">${players[i].owner}</div>
+              </div>
+            `);
+          }
+
+          $('#players').html(text);
+        },
+        error: function(){
+          alert('there was an error');
+        }
+      });
+  });
+});
+</script>
+
+{% endblock %}

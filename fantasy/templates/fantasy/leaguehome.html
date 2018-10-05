@@ -1,0 +1,386 @@
+{% extends 'fantasy/base2.html' %}
+{% block main %}
+<ul class="nav" id="leaguehome-outer">
+  <li class="nav-item col leaguehome-border" style="background-color: grey;">
+    <a class="nav-link" href="/leaguehome{{ league.id }}">Home</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguerosters{{ league.id }}">Rosters</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leagueplayers{{ league.id }}">Players</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguetransactions{{ league.id }}">Transactions</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguelineup{{ league.id }}">Lineup</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguedraft{{ league.id }}">Draft</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguecalendar{{ league.id }}">Calendar</a>
+  </li>
+</ul>
+
+  <div class="main-body">
+    <div id="leaguehome-first">
+      <div id="lineup">
+        <h3>Lineup</h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-3" style="margin-left: 5%;">Player</div>
+            <div class="col-sm-1"></div>
+            <div class="col-sm-2">Bye</div>
+            <div class="col-sm-1">News</div>
+          </div>
+        </div>
+          {% for player in roster %}
+            {% if player.player.position == 'QB' %}
+              <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+                {% if player.starting == True %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                  {% else %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                {% endif %}
+                <div class="col-4 lineup-name">{{ player.player.name }}</div>
+                <div class="col-2">{{ player.player.bye_week }}</div>
+                <div class="col-sm-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% for player in roster %}
+            {% if player.player.position == 'RB' %}
+              <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+                {% if player.starting == True %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                  {% else %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                {% endif %}
+                <div class="col-4 lineup-name">{{ player.player.name }}</div>
+                <div class="col-2">{{ player.player.bye_week }}</div>
+                <div class="col-sm-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% for player in roster %}
+            {% if player.player.position == 'WR' %}
+              <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+                {% if player.starting == True %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                  {% else %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                {% endif %}
+                <div class="col-4 lineup-name">{{ player.player.name }}</div>
+                <div class="col-2">{{ player.player.bye_week }}</div>
+                <div class="col-sm-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% for player in roster %}
+            {% if player.player.position == 'TE' %}
+              <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+                {% if player.starting == True %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                  {% else %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                {% endif %}
+                <div class="col-4 lineup-name">{{ player.player.name }}</div>
+                <div class="col-2">{{ player.player.bye_week }}</div>
+                <div class="col-sm-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+
+          {% for player in roster %}
+            {% if player.player.position == 'DST' %}
+              <div class="row" id="row{{ player.player.id }}{{ player.starting }}">
+                {% if player.starting == True %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                  {% else %}
+                  <div class="col-1 lineup-button">
+                    <button class="bg-primary button-width" type="button" value="{{ player.player.id }}" data-position="{{ player.player.position }}" data-starting="{{ player.starting }}" onclick="swapper(this.value, this.dataset.position, this.dataset.starting)">QB</button>
+                  </div>
+                {% endif %}
+                <div class="col-4 lineup-name">{{ player.player.name }}</div>
+                <div class="col-2">{{ player.player.bye_week }}</div>
+                <div class="col-sm-2"></div>
+              </div>
+            {% endif %}
+          {% endfor %}
+      </div>
+      <div id="standings">
+        <h3>Standings</h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-1" style="margin-left: 1.8%;">Rank</div>
+            <div class="col-sm-2">Franchise</div>
+            <div class="col-sm-2">W-L-T</div>
+            <div class="col-sm-2">Pts For</div>
+            <div class="col-sm-2">Pts Against</div>
+            <div class="col-sm-2">Bid Bal</div>
+          </div>
+        </div>
+        <div id="standing-body">
+          <ol>
+            {% for team in standings %}
+              <li>
+                <div class="row">
+                  <div class="col-sm-3" style="margin-left: 4%; margin-right: -6%; text-align: left;"><a href="#">{{ team.team_name }}</a></div>
+                  <div class="col-sm-2">{{ team.wins }}-{{ team.loses }}-{{ team.ties }}</div>
+                  <div class="col-sm-2">{{ team.points_for }}</div>
+                  <div class="col-sm-2">{{ team.points_against }}</div>
+                  <div class="col-sm-2" style="margin-left: 2.8%;">{{ team.bid }}</div>
+                </div>
+              </li>
+            {% endfor %}
+          </ol>
+        </div>
+      </div>
+    </div>
+    <div id="leaguehome-second">
+      <div id="leaguehome-leagues">
+        <h3>Leagues</h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-1" id='previous'></div>
+            <div class="col-sm-3">Contest</div>
+            <div class="col-sm-3">Level</div>
+            <div class="col-sm-4">Record</div>
+            <div class="col-sm-1" id='next'></div>
+          </div>
+        </div>
+        <div id="leagues-body">
+          <ol>
+              {% for league_user in all_leagues %}
+              <li>
+                <a href="/leaguehome{{ league_user.league.id }}">
+                  <div class="row">
+                    <div class="col-sm-3" style="margin-left: 2%;">{{ league_user.league.league_type.contest}} {{ league_user.number }}</div>
+                    <div class="col-sm-3" style="margin-left: 2%;">${{league_user.league.league_type.level}}</div>
+                    <div class="col-sm-4" style="margin-left: 2%;">{{league_user.wins}}/{{league_user.loses}}</div>
+                    <div class="col-sm-1"></div>
+                  </div>
+                </a>
+              </li>
+              {% endfor %}
+          </ol>
+        </div>
+      </div>
+      <div id="leaguehome-transactions">
+        <h3>Transactions</h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-3" style="margin-left: 20px;">Franchise</div>
+            <div class="col-sm-3"> Type</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+{% block script %}
+<script type="text/javascript">
+//global variables
+starting = '';
+other_id = '';
+position = '';
+idlist = [];
+positionlist = [];
+
+$(document).ready(function(){
+  //local variables
+  total_leagues = 0;
+  current_league_number = 0;
+  count = 0;
+  //assigning value to previous and next league symbols
+  {% for user in all_leagues %}
+    total_leagues++;
+    {% if league_user.id == user.id %}
+      current_league_number = total_leagues;
+    {% endif %}
+  {% endfor %}
+
+  {% for user in all_leagues %}
+    count++;
+    if (current_league_number == 1 && count == total_leagues){
+        $('#previous').html('<a href="/leaguehome{{user.league.id }}">&#10094;</a>');
+    }
+    else if (count == current_league_number - 1){
+        $('#previous').html('<a href="/leaguehome{{user.league.id }}">&#10094;</a>');
+    }
+    if (current_league_number == total_leagues && count == 1){
+        $('#next').html('<a href="/leaguehome{{user.league.id }}">&#10095;</a>');
+    }
+    else if (count == current_league_number + 1){
+        $('#next').html('<a href="/leaguehome{{user.league.id }}">&#10095;</a>');
+    }
+
+  {% endfor %}
+
+  //copying player ids and positions into js lists
+  {% for player in roster %}
+    idlist.push('{{ player.player.id }}');
+    positionlist.push('{{ player.player.position }}');
+  {% endfor %}
+});
+//highlights and swaps starters and bench positions
+function swapper(id, pos, start){
+  //if selected player was clicked twice deselect
+  if (other_id == id){
+    //reset
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    starting = '';
+    other_id = '';
+    position = '';
+  }//if current selected player is a bench player and previous selection is a valid starter player
+  else if (starting == 'True' && start == 'False' && position == pos){
+    //reset background color
+    for (i = 0; i < idlist.length; i++){
+      if (position == positionlist[i]){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+      }
+    }
+    //swap
+    swap(id);
+    //get elements inner html
+    starter = $(`#row${other_id}True`).html();
+    bench = $(`#row${id}False`).html();
+    //update elements id values
+    $(`#row${other_id}True`).attr('id', `row${id}True`);
+    $(`#row${id}False`).attr('id', `row${other_id}False`);
+    //exchange inner html
+    $(`#row${id}True`).html(bench);
+    $(`#row${other_id}False`).html(starter);
+    //get text values of elements button tag
+    first = $(`#row${id}True button`).text();
+    second = $(`#row${other_id}False button`).text();
+    //exchange button values
+    $(`#row${id}True button`).text(second);
+    $(`#row${other_id}False button`).text(first);
+    //update dataset starting value
+    $(`#row${id}True button`).attr("data-starting", "True");
+    $(`#row${other_id}False button`).attr("data-starting", "False");
+
+    //reset variables
+    starting = '';
+    other_id = '';
+    position = '';
+  }
+  //if current selection in a starter and previous selection is a valid bench player
+  else if (starting == 'False' && start == 'True' && position == pos){
+    //reset background color
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //swap
+    swap(id);
+    //get elements inner html
+    starter = $(`#row${id}True`).html();
+    bench = $(`#row${other_id}False`).html();
+    //update elements id values
+    $(`#row${id}True`).attr('id', `row${other_id}True`);
+    $(`#row${other_id}False`).attr('id', `row${id}False`);
+    //exchange inner html
+    $(`#row${other_id}True`).html(bench);
+    $(`#row${id}False`).html(starter);
+    //get text values of elements button tag
+    first = $(`#row${other_id}True button`).text();
+    second = $(`#row${id}False button`).text();
+    //exchange button values
+    $(`#row${other_id}True button`).text(second);
+    $(`#row${id}False button`).text(first);
+    //change onclick function to match starting value
+    $(`#row${other_id}True button`).attr("data-starting", "True");
+    $(`#row${id}False button`).attr("data-starting", "False");
+
+    //reset variables
+    starting = '';
+    other_id = '';
+    position = '';
+
+  }//set focus on this player
+  else if (start == 'True') {
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //set focus on this player
+    $(`#row${id}True`).css("background-color", "LightCyan");
+
+    for (i = 0; i < idlist.length; i++){
+      if (pos == positionlist[i] && idlist[i] != id){
+        $(`#row${idlist[i]}False`).css("background-color", "LightGreen");
+      }
+    }
+    starting = 'True';
+    other_id = id;
+    position = pos;
+  }//set focus on this player
+  else if (start == 'False'){
+    for (i = 0; i < idlist.length; i++){
+        $(`#row${idlist[i]}False`).css("background-color", "");
+        $(`#row${idlist[i]}True`).css("background-color", "");
+    }
+    //set focus on this player
+    $(`#row${id}False`).css("background-color", "LightCyan");
+
+    for (i = 0; i < idlist.length; i++){
+      if (pos == positionlist[i] && idlist[i] != id){
+        $(`#row${idlist[i]}True`).css("background-color", "LightGreen");
+      }
+    }
+    starting = 'False';
+    other_id = id;
+    position = pos;
+  }
+}
+//if valid lineup request exchange starting values
+function swap(id){
+    $.ajax({
+      url:'/swap',
+      dataType: 'json',
+      type: 'GET',
+      data: {
+        'league_user_id': '{{ league_user.id }}' ,
+        'id': id,
+        'otherid': other_id
+      },
+      success: function(data){
+        //continue
+      },
+      error: function(){
+        alert('there was an error');
+      }
+    });
+}
+</script>
+{% endblock %}

@@ -1,0 +1,251 @@
+{% extends 'fantasy/base2.html' %}
+{% block main %}
+<ul class="nav" id="leaguehome-outer">
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguehome{{ league.id }}">Home</a>
+  </li>
+  <li class="nav-item col leaguehome-border" style="background-color: grey;">
+    <a class="nav-link" href="/leaguerosters{{ league.id }}">Rosters</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leagueplayers{{ league.id }}">Players</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguetransactions{{ league.id }}">Transactions</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguelineup{{ league.id }}">Lineup</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguedraft{{ league.id }}">Draft</a>
+  </li>
+  <li class="nav-item col leaguehome-border">
+    <a class="nav-link" href="/leaguecalendar{{ league.id }}">Calendar</a>
+  </li>
+</ul>
+
+<div class="main-body" style="background-color: white; margin-top: 20px;">
+  {% for user in all_users %}
+    {% if user.franchise|divisibleby:"2" %}
+    <div class="roster-right" id="right">
+      <h3>{{ user.team_name }}<small>-{{ user.wins }}/{{ user.loses }}</small>&nbsp;<a href="#"><b>&#8646;</b></a></h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-2">Player</div>
+            <div class="col-sm-2">Bye</div>
+            <div class="col-sm-2">points</div>
+            <div class="col-sm-2">proj pts</div>
+            <div class="col-sm-2">News</div>
+          </div>
+        </div>
+        {% for player in roster %}
+          <div class="row">
+            {% if player.player.position == 'QB' and player.league_user.users.id == user.users.id %}
+              {% if player.starting == True %}
+                <div class="col-sm-2" style="color: red;">{{ player.player.name }}</div>
+              {% else %}
+                <div class="col-sm-2">{{ player.player.name }}</div>
+              {% endif %}
+              <div class="col-sm-2"></div>
+              <div class="col-sm-2">{{ player.player.bye_week }}</div>
+              {% for points in fantasy_points %}
+                {% if points.player.name == player.player.name %}
+                  <div class="col-sm-2">{{ points.total }}</div>
+                {% endif %}
+              {% endfor %}
+              <div class="col-sm-2"></div>
+            {% endif %}
+          </div>
+       {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'RB' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-2" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-2">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2">{{ points.total }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'WR' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-2" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-2">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2">{{ points.total }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'TE' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-2" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-2">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2">{{ points.total }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'DST' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-2" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-2">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-2"></div>
+                <div class="col-sm-2">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2">{{ points.total }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+    </div>
+    {% else %}
+    <div class="roster-left" id="left">
+      <h3>{{ user.team_name }}<small>-{{ user.wins }}/{{ user.loses }}</small>&nbsp;<a href="#"><b>&#8646;</b></a></h3>
+        <div class="main-header">
+          <div class="row">
+            <div class="col-sm-3" style="margin-left: -1%; margin-right: 1%;">Player</div>
+            <div class="col-sm-2">Bye</div>
+            <div class="col-sm-2">points</div>
+            <div class="col-sm-2">proj pts</div>
+            <div class="col-sm-2">News</div>
+          </div>
+        </div>
+        {% for player in roster %}
+          <div class="row">
+            {% if player.player.position == 'QB' and player.league_user.users.id == user.users.id %}
+              {% if player.starting == True %}
+                <div class="col-sm-3 roster-name" style="color: red;">{{ player.player.name }}</div>
+              {% else %}
+                <div class="col-sm-3 roster-name">{{ player.player.name }}</div>
+              {% endif %}
+              <div class="col-sm-1">{{ player.player.bye_week }}</div>
+              {% for points in fantasy_points %}
+                {% if points.player.name == player.player.name %}
+                  <div class="col-sm-2 roster-points">{{ points.total_points }}</div>
+                {% endif %}
+              {% endfor %}
+              <div class="col-sm-2"></div>
+            {% endif %}
+          </div>
+       {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'RB' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-3 roster-name" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-3 roster-name">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-1">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2 roster-points">{{ points.total_points }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'WR' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-3 roster-name" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-3 roster-name">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-1">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2 roster-points">{{ points.total_points }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'TE' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-3 roster-name" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-3 roster-name">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-1">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2 roster-points">{{ points.total_points }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+
+          {% for player in roster %}
+            <div class="row">
+              {% if player.player.position == 'DST' and player.league_user.users.id == user.users.id %}
+                {% if player.starting == True %}
+                  <div class="col-sm-3 roster-name" style="color: red;">{{ player.player.name }}</div>
+                {% else %}
+                  <div class="col-sm-3 roster-name">{{ player.player.name }}</div>
+                {% endif %}
+                <div class="col-sm-1">{{ player.player.bye_week }}</div>
+                {% for points in fantasy_points %}
+                  {% if points.player.name == player.player.name %}
+                    <div class="col-sm-2 roster-points">{{ points.total_points }}</div>
+                  {% endif %}
+                {% endfor %}
+                <div class="col-sm-2"></div>
+              {% endif %}
+            </div>
+          {% endfor %}
+    </div>
+    {% endif %}
+  {% endfor %}
+</div>
+{% endblock %}
